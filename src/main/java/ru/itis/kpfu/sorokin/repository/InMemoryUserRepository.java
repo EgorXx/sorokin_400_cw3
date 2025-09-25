@@ -11,8 +11,6 @@ public class InMemoryUserRepository {
     }
 
     public static void signUpUser(String login, String password) {
-        //TODO test
-        System.out.println(login + " " + password + " прям в память зареган");
         mapLoginToPassword.put(login, password);
     }
 
