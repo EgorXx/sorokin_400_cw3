@@ -1,8 +1,8 @@
-package ru.itis.kpfu.sorokin.server;
+package ru.itis.kpfu.sorokin.servlet;
 
 import ru.itis.kpfu.sorokin.repository.InMemoryUserRepository;
 
-import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +15,8 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("login.html");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("login.ftl").forward(req, resp);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 
                 resp.addCookie(cookie);
 
-                resp.sendRedirect("main.jsp");
+                resp.sendRedirect("/main");
                 flag = true;
             }
         }

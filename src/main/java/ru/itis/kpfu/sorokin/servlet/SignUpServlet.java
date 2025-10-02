@@ -1,4 +1,4 @@
-package ru.itis.kpfu.sorokin.server;
+package ru.itis.kpfu.sorokin.servlet;
 
 import ru.itis.kpfu.sorokin.repository.InMemoryUserRepository;
 
@@ -13,8 +13,8 @@ import java.io.IOException;
 public class SignUpServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("sign_up.html");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("sign_up.ftl").forward(req, resp);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class SignUpServlet extends HttpServlet {
 
         InMemoryUserRepository.signUpUser(login, password);
 
-        resp.sendRedirect("login.html");
+        resp.sendRedirect("/index");
     }
 }
