@@ -16,6 +16,10 @@
         <input type="submit" value="login">
     </form>
 
+    <br>
+
+    <a href="/sign_up">Регистрация</a>
+
 </#macro>
 
 

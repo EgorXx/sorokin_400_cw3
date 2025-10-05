@@ -9,17 +9,18 @@
 
     <a href="/logout">Выйти</a>
 
+    <br>
+
     <#if users?has_content>
-        Таблица рекордов:
+        Таблица пользователей:
         <br>
-        Имя Очки
+        Имя Логин
         <br>
         <#list users as u>
-            ${u.name} ${u.score}
+            ${u.name} ${u.login}
             <br>
         </#list>
     </#if>
-
 </#macro>
 
 

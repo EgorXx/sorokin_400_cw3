@@ -1,6 +1,8 @@
 package ru.itis.kpfu.sorokin.servlet;
 
 import ru.itis.kpfu.sorokin.repository.InMemoryUserRepository;
+import ru.itis.kpfu.sorokin.service.UserService;
+import ru.itis.kpfu.sorokin.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,8 @@ import java.io.IOException;
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
+    private final UserService userService = new UserServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("login.ftl").forward(req, resp);
@@ -21,35 +25,23 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String loginInput = req.getParameter("login");
-        String passwordInput = req.getParameter("password");
-        boolean flag = false;
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
 
-        for (var entry : InMemoryUserRepository.getAllUsers().entrySet()) {
-            String login = entry.getKey();
-            String password = entry.getValue();
+        if (userService.authenticate(login, password)) {
+            HttpSession httpSession = req.getSession();
+            httpSession.setAttribute("user", login);
+            httpSession.setMaxInactiveInterval(60 * 60);
 
-            if (login.equalsIgnoreCase(loginInput) && password.equalsIgnoreCase(passwordInput)) {
+            Cookie cookie = new Cookie("user", login);
+            cookie.setMaxAge(24 * 60 * 60);
 
-                HttpSession httpSession = req.getSession();
-                httpSession.setAttribute("user", login);
-                httpSession.setMaxInactiveInterval(60 * 60);
+            resp.addCookie(cookie);
 
-                // cookie
-                Cookie cookie = new Cookie("user", login);
-                cookie.setMaxAge(24 * 60 * 60);
-
-                resp.addCookie(cookie);
-
-                resp.sendRedirect("/main");
-                flag = true;
-            }
-        }
-
-        if (!flag) {
+            resp.sendRedirect("/main");
+        } else {
             resp.sendRedirect("/login");
         }
-
     }
 
 }

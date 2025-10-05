@@ -8,6 +8,9 @@
 <#macro content>
 
     <a href="/logout">Выйти</a>
+
+    <br>
+
     <h3>
         Hello, ${sessionUser}! Login successful
         <br>
@@ -15,6 +18,11 @@
         <br>
         Cookie user = ${cookieUser}
     </h3>
+
+    <br>
+
+    <a href="/user">Список пользователей</a>
+    <a href="/index">Начальная index страница</a>
 
 </#macro>
 

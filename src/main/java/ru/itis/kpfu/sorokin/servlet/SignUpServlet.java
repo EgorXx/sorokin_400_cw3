@@ -1,6 +1,8 @@
 package ru.itis.kpfu.sorokin.servlet;
 
 import ru.itis.kpfu.sorokin.repository.InMemoryUserRepository;
+import ru.itis.kpfu.sorokin.service.UserService;
+import ru.itis.kpfu.sorokin.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,8 @@ import java.io.IOException;
 @WebServlet(name = "SignUp", urlPatterns = "/sign_up")
 public class SignUpServlet extends HttpServlet {
 
+    private final UserService userService = new UserServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("sign_up.ftl").forward(req, resp);
@@ -19,10 +23,12 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String lastname = req.getParameter("lastname");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        InMemoryUserRepository.signUpUser(login, password);
+        userService.save(name, lastname, login, password);
 
         resp.sendRedirect("/index");
     }
